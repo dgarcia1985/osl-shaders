@@ -1,0 +1,106 @@
+#define A sqrt(3)/2
+#define A2 (2*A)
+#define HA (A/2)
+#define A4 (4*A)
+
+
+surface Hexagonos(vector Vector=0, 
+		output float Color=0[[string label="Pattern"]],  
+		output float Checkhex=0[[string label="Checkhex"]], 
+		output float CentersD=0[[string label="Centers"]], 
+		output float Middle=0[[string label="Middle Points"]], 
+		output float ZonesC=0[[string label="Zones"]]
+)
+
+{
+    float coordx = mod(Vector[0],3);
+    float coordy = mod(Vector[1],A4);
+    float coordz = mod(Vector[2],3);
+    float Zones=0;
+    
+    if ( coordx > 1.5 ) coordx = 3 - coordx;
+    if ( coordy > A2 ) {coordy = A4 - coordy; Zones=1;}
+    else
+    {
+    Zones=0;
+    }
+    if ( coordz > 1.5 ) coordz = 3 - coordz;
+     
+   vector Vectors[12]={vector(0,A,0),
+    vector(0.75,((3*A)/2),0),
+    vector(0.75,HA,0),
+    vector(1.5,0,0),
+    vector(1.5,A2,0),
+    vector(0,HA,0.75),
+    vector(0,((3*A)/2),0.75),
+    vector(0,0,1.5),
+    vector(0,A2,1.5),
+    vector(1.5,0,1.5),
+    vector(0.75,0,0.375),
+    vector(0.75,0,0.625)};
+    
+    vector coord=vector(coordx,coordy,coordz);   
+     
+    vector Centers[5]={vector(0,0,0),
+        vector(0,A2,0),
+        vector(1.5,A,0),
+        vector(0,A,1.5),
+        vector(1.5,0,0.95)        
+        };
+        
+    vector VectorAct=Vectors[0];
+    vector CenterAct=Centers[0];
+    
+    for (int a=0;a<5;a++)
+    {
+        if (a==0)
+        {
+        ZonesC=1;
+        }
+      if (distance(coord,Centers[a])<distance(coord,CenterAct))
+      {
+      CenterAct=Centers[a];
+
+        if (a==1)
+        {
+        ZonesC=0.25;
+        }
+        else if (a==2)
+        {
+            if (Zones==1)
+            {
+            ZonesC=0.75;
+            }
+            else
+            {
+            ZonesC=0.5;
+            }      
+        }           
+      }  
+    }
+    
+    for (int a=0;a<12;a++)
+    {
+      if (distance(coord,Vectors[a])<distance(coord,VectorAct))
+      {
+      VectorAct=Vectors[a];
+      }  
+      if (distance(coord,Vectors[a])==distance(coord,VectorAct))
+      {
+        if (distance(Vectors[a],CenterAct)<distance(VectorAct,CenterAct))
+        {
+        VectorAct=Vectors[a];        
+        }
+      }
+    }
+    
+
+ 
+
+    Color=1-( distance(CenterAct,VectorAct)-
+        (pow(distance(VectorAct,coord),2)-pow(distance(CenterAct,coord),2)+pow(distance(CenterAct,VectorAct),2))/
+        (2*distance(CenterAct,VectorAct))
+           );
+    Middle=distance(coord,VectorAct);
+    CentersD=distance(coord,CenterAct);
+}

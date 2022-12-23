@@ -1,0 +1,78 @@
+#define B sqrt(0.5)
+
+surface Octogon(vector Vector=0,
+                 output float Centros=0, 
+                 float FactorCuadrado=1.2 [[ string label = "Square Factor", float min = 0, float max = 2 ]],
+                 float FactorOctogono=1.2 [[ string label = "Octogom Factor",float min = 0.5, float max = 3.0 ]],
+                 output float Vertices=0,
+                 output float Zones=0[[ string label = "Zones"]],
+                 output float Color=0[[string label="Pattern"]])
+{
+    float Zonas=0;
+    float coordx = mod(Vector[0],(0.5+B)*2);
+    float coordy = mod(Vector[1],(0.5+B)*2);
+    float coordz = mod(Vector[2],(0.5+B)*2);
+    
+    if ( coordx > 0.5+B ) coordx = ((0.5+B)*2) - coordx;
+    if ( coordy > 0.5+B ) coordy = ((0.5+B)*2) - coordy;
+    if ( coordz > 0.5+B ) coordz = ((0.5+B)*2) - coordz;
+     
+   vector Vectors[6]={vector(B/2,B/2,0),
+    vector(0,B+0.5,0),
+    vector(B+0.5,0,0),
+    vector(B/2,0,B/2),
+    vector(0,B/2,B/2),
+    vector(0,0,B+0.5)};
+    
+    vector coord=vector(coordx,coordy,coordz);   
+     
+    vector Centers[4]={vector(0,0,0),
+        vector(B+0.5,B+0.5,0),
+        vector(B+0.5,0,B+0.5),
+        vector(0,B+0.5,B+0.5)        
+        };
+        
+    vector VectorAct=Vectors[0];
+    
+    vector CenterAct=Centers[0];
+  
+    
+   if ((coord.x<B && coord.y<B && coord.y<B-coord.x) && (coord.y<B && coord.z<B-coord.y) && (coord.z<B && coord.x<B-coord.z) )
+    {
+    CenterAct=Centers[0];
+    Zonas=1;
+    }
+    else
+    {
+   CenterAct=Centers[1];
+        for (int a=1;a<4;a++)
+        {
+            if (distance(coord,Centers[a])<distance(coord,CenterAct))
+            {
+            CenterAct=Centers[a];
+            }
+        }           
+    }
+    
+    for (int a=0;a<6;a++)
+    {
+      if (distance(coord,Vectors[a])<distance(coord,VectorAct))
+      {
+      VectorAct=Vectors[a];
+      }  
+    }
+    
+    Centros=distance(coord,CenterAct);
+    Vertices=distance(coord,VectorAct);
+ 
+          
+
+   float Calculo=1-( distance(CenterAct,VectorAct)-
+        (pow(distance(VectorAct,coord),2)-pow(distance(CenterAct,coord),2)+pow(distance(CenterAct,VectorAct),2))/
+        (2*distance(CenterAct,VectorAct))
+           );
+        Color=((Calculo+0.2)/((1.6*FactorOctogono)*(1-Zonas)))+
+       ((Calculo)
+        /((5*FactorCuadrado)*(Zonas))); 
+        Zones=Zonas;  
+}
