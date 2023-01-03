@@ -44,7 +44,7 @@ surface Hexagonos(vector Vector=0,
     vector VectorAct=Middle[0];
     vector CenterAct=Centers[0];
 
-    for (int a=0;a<4;a++)
+    for (int a=0;a<arraylength(Centers);a++)
     {
         if (a==0)
         {
@@ -75,7 +75,7 @@ surface Hexagonos(vector Vector=0,
       }  
     }
     
-    for (int a=0;a<8;a++)
+    for (int a=0;a<arraylength(Middle);a++)
     {
       if (distance(coord,Middle[a])<distance(coord,VectorAct))
       {
@@ -83,10 +83,11 @@ surface Hexagonos(vector Vector=0,
       }  
     }
     
+
     MiddleD=distance(coord,VectorAct);
     CentersD=distance(coord,CenterAct);
 
-    Pattern=1-( distance(CenterAct,VectorAct)-
+    Pattern=1-(distance(CenterAct,VectorAct)-
         (pow(distance(VectorAct,coord),2)-pow(distance(CenterAct,coord),2)+pow(distance(CenterAct,VectorAct),2))/
         (2*distance(CenterAct,VectorAct))
            );
