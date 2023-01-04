@@ -1,14 +1,14 @@
 #define B sqrt(0.5)
 
-surface Octogon(vector Vector=0,
-                 output float Centros=0, 
+surface Octagon(vector Vector=0,
+                 output float Centros=0[[ string label = "Centers"]], 
                  float FactorCuadrado=1.2 [[ string label = "Square Factor", float min = 0, float max = 2 ]],
-                 float FactorOctogono=1.2 [[ string label = "Octogom Factor",float min = 0.5, float max = 3.0 ]],
-                 output float Vertices=0,
+                 float FactorOctogono=1.2 [[ string label = "Octagon Factor",float min = 0.5, float max = 3.0 ]],
+                 output float MiddlePoints=0[[ string label = "MiddlePoints"]],
                  output float Zones=0[[ string label = "Zones"]],
-                 output float Color=0[[string label="Pattern"]])
+                 output float Pattern=0[[string label="Pattern"]])
 {
-    float Zonas=0;
+
     float coordx = mod(Vector[0],(0.5+B)*2);
     float coordy = mod(Vector[1],(0.5+B)*2);
     float coordz = mod(Vector[2],(0.5+B)*2);
@@ -37,10 +37,10 @@ surface Octogon(vector Vector=0,
     vector CenterAct=Centers[0];
   
     
-   if ((coord.x<B && coord.y<B && coord.y<B-coord.x) && (coord.y<B && coord.z<B-coord.y) && (coord.z<B && coord.x<B-coord.z) )
+   if ((coord.y<B-coord.x) && (coord.z<B-coord.y) && (coord.x<B-coord.z) )
     {
     CenterAct=Centers[0];
-    Zonas=1;
+    Zones=1;
     }
     else
     {
@@ -63,7 +63,7 @@ surface Octogon(vector Vector=0,
     }
     
     Centros=distance(coord,CenterAct);
-    Vertices=distance(coord,VectorAct);
+    MiddlePoints=distance(coord,VectorAct);
  
           
 
@@ -71,8 +71,8 @@ surface Octogon(vector Vector=0,
         (pow(distance(VectorAct,coord),2)-pow(distance(CenterAct,coord),2)+pow(distance(CenterAct,VectorAct),2))/
         (2*distance(CenterAct,VectorAct))
            );
-        Color=((Calculo+0.2)/((1.6*FactorOctogono)*(1-Zonas)))+
+        Pattern=((Calculo+0.2)/((1.6*FactorOctogono)*(1-Zones)))+
        ((Calculo)
-        /((5*FactorCuadrado)*(Zonas))); 
-        Zones=Zonas;  
+        /((5*FactorCuadrado)*(Zones))); 
+
 }
