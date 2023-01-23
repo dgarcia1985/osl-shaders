@@ -1,5 +1,5 @@
 # Shaders en OSL
-<a href="README.en.md">English</a>
+<a href="README.en">English</a>
 
 ![Materiales](Img/img.png)
 
