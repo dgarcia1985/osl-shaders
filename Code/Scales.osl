@@ -1,8 +1,8 @@
 surface Scales(vector Vector=0,
 		float Height=1,
 		float Width=1, 
-		float F2=1,
-		float F1=2,
+		float F1=1,
+		float F2=2,
 		output float Pattern=0)
 {
 	float coordX=abs(mod(Vector.x,2*Width)-Width);
