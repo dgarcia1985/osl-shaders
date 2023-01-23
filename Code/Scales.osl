@@ -1,0 +1,76 @@
+surface Scales(vector Vector=0,
+		float Height=1,
+		float Width=1, 
+		float F2=1,
+		float F1=2,
+		output float Pattern=0)
+{
+	float coordX=abs(mod(Vector.x,2*Width)-Width);
+	float coordY=mod(Vector.y,2*Height)-Height;
+	float coordZ=mod(Vector.z,2*Width)-Width;
+	vector vectorX=vector(1,0,0);
+	vector vectorZ=vector(0,0,1);
+	vector Coord=vector(coordX,coordY,coordZ);
+	float AngleX=acos(dot(abs(vectorX),abs(Ng))/(length(vectorX)*length(Ng)));
+	float AngleZ=acos(dot(abs(vectorZ),abs(Ng))/(length(vectorZ)*length(Ng)));
+
+
+    	float coordY2=coordY;
+    	float coordX2=coordX;
+    	float coordZ2=coordZ;
+  
+
+	if (AngleX>AngleZ)
+	{  
+    		coordX=abs(coordX);
+		    
+		if (coordY<(F2*Height/pow(Width,F1))*pow(coordX,F1) && coordY>0)
+		{
+    		coordY=-1*coordY;
+		}
+  
+		if (coordY<0)
+		{
+    		coordX2=Width-coordX;
+    		coordY2=Height-abs(coordY);
+
+    			if (coordY2<(F2*Height/pow(Width,F1))*pow(coordX2,F1))
+    			{
+    			coordX2=coordX;
+    			coordY2=-1*coordY;
+    			}
+		}
+		
+		vector VectorN=vector(coordX2,coordY2,coordZ2);
+		vector VectorN2=vector(VectorN.x,(F2*Height/pow(Width,F1))*pow(VectorN.x,F1),VectorN.z);
+		Pattern=distance(VectorN,VectorN2);
+	}
+	else
+	{
+
+   		coordZ=abs(coordZ);
+	
+		
+		if (coordY<(F2*Height/pow(Width,F1))*pow(coordZ,F1) && coordY>0)
+		{
+    		coordY=-1*coordY;
+		}
+  
+		if (coordY<0)
+		{
+    		coordY2=Height-abs(coordY);
+    		coordZ2=Width-coordZ;
+
+    			if (coordY2<(F2*Height/pow(Width,F1))*pow(coordZ2,F1))
+    			{
+    			coordZ2=coordZ;
+    			coordY2=-1*coordY;
+    			}
+		}
+	
+	vector VectorN=vector(coordX2,coordY2,coordZ2);
+	vector VectorN2=vector(VectorN.x,(F2*Height/pow(Width,F1))*pow(VectorN.z,F1),VectorN.z);
+	Pattern=distance(VectorN,VectorN2);
+	}
+
+}
