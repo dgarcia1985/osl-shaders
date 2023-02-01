@@ -30,8 +30,7 @@ surface Scales(vector Vector=0,
     
     if (coordY<0)
     {
-    Zones2.r=(floor((Vector.x+Width)/2/Width)*Width);
-    Zones2.b=(floor((Vector.z+Width)/2/Width)*Width);   
+    Zones2.r=(floor((Vector.x+Width)/2/Width)*Width);  
     }
     
     if (AngleX>AngleZ)
@@ -70,8 +69,7 @@ surface Scales(vector Vector=0,
                 {
                 coordX2=coordX;
                 coordY2=-1*coordY;
-                Zones2.g=floor(Vector.y/Height)*Height-Height;
-                Zones2.b=(floor((Vector.z+Width)/2/Width)*Width);   
+                Zones2.g=floor(Vector.y/Height)*Height-Height; 
                 
                    if (zonesX<0)
                     {
