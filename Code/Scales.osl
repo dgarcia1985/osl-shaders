@@ -5,7 +5,7 @@ surface Scales(vector Vector=0,
         float F2=2,
         output float Pattern=0,
         output float Zones=0.25,
-        output color Zones2=0)
+        output vector Zones2=0)
 {
     float coordX=mod(Vector.x,2*Width)-Width;
     float zonesX=mod(Vector.x,4*Width)-Width*2;
@@ -16,37 +16,38 @@ surface Scales(vector Vector=0,
     
     vector vectorX=vector(1,0,0);
     vector vectorZ=vector(0,0,1);
-    float AngleX=acos(dot(abs(vectorX),abs(Ng))/(length(vectorX)*length(Ng)));
-    float AngleZ=acos(dot(abs(vectorZ),abs(Ng))/(length(vectorZ)*length(Ng)));
+
+    float AngleX=acos(dot(vectorX,abs(Ng))/(length(vectorX)*length(Ng)));
+    float AngleZ=acos(dot(vectorZ,abs(Ng))/(length(vectorZ)*length(Ng)));
 
 
         float coordY2=coordY;
         float coordX2=coordX;
         float coordZ2=coordZ;
         
-    Zones2.r=(floor((Vector.x)/2/Width)*Width);    
-    Zones2.g=floor(Vector.y/Height)*Height;
-    Zones2.b=(floor((Vector.z)/2/Width)*Width);
+    Zones2.x=(floor((Vector.x)/2/Width)*Width);    
+    Zones2.y=floor(Vector.y/Height)*Height;
+    Zones2.z=(floor((Vector.z)/2/Width)*Width);
     
     if (coordY<0)
     {
-    Zones2.r=(floor((Vector.x+Width)/2/Width)*Width);  
+    Zones2.x=(floor((Vector.x+Width)/2/Width)*Width); 
+    Zones2.z=(floor((Vector.z+Width)/2/Width)*Width); 
     }
     
     if (AngleX>AngleZ)
     {  
-            coordX2=abs(coordX);
-            if (zonesX>0)
-            {
+        coordX2=abs(coordX);
+        if (zonesX>0)
+        {
             Zones=0.5;            
-            }
+        }
 
         if (coordY2<(F2*Height/pow(Width,F1))*pow(coordX2,F1) && coordY2>0)
         {
             coordY2=-1*coordY;
-            Zones2.r=(floor((Vector.x+Width)/2/Width)*Width);   
-            Zones2.g=floor(Vector.y/Height)*Height-Height;  
-                             
+            Zones2.x=(floor((Vector.x+Width)/2/Width)*Width);   
+            Zones2.y=floor(Vector.y/Height)*Height-Height;                             
         }
 
   
@@ -62,30 +63,30 @@ surface Scales(vector Vector=0,
             }
             else
             {
-            Zones=1;
-            
+            Zones=1;            
             }
                 if (coordY2<(F2*Height/pow(Width,F1))*pow(coordX2,F1))
                 {
-                coordX2=coordX;
-                coordY2=-1*coordY;
-                Zones2.g=floor(Vector.y/Height)*Height-Height; 
+                    coordX2=abs(coordX);
+                    coordY2=-1*coordY;
+                    Zones2.y=floor(Vector.y/Height)*Height-Height;
+   
                 
                    if (zonesX<0)
                     {
                         if (coordX>0)
                         {
-                    Zones2.r=(floor((Vector.x-Width)/2/Width)*Width); 
+                    		Zones2.x=(floor((Vector.x-Width)/2/Width)*Width); 
                         }
-                    Zones=0.25;
+                    	Zones=0.25;
                     }
                     else
                     {
                         if (coordX>0)
                         {
-                        Zones2.r=(floor((Vector.x-Width)/2/Width)*Width); 
+                       		Zones2.x=(floor((Vector.x-Width)/2/Width)*Width); 
                         }
-                    Zones=0.5;
+                    	Zones=0.5;
                     }
                 }
         }
@@ -93,8 +94,6 @@ surface Scales(vector Vector=0,
         vector VectorN=vector(coordX2,coordY2,coordZ2);
         vector VectorN2=vector(VectorN.x,(F2*Height/pow(Width,F1))*pow(VectorN.x,F1),VectorN.z);
         Pattern=distance(VectorN,VectorN2);
-
-
     }
     else
     {
@@ -108,8 +107,8 @@ surface Scales(vector Vector=0,
         if (coordY<(F2*Height/pow(Width,F1))*pow(coordZ2,F1) && coordY>0)
         {
             coordY2=-1*coordY;
-            Zones2.g=floor(Vector.y/Height)*Height-Height;
-            Zones2.b=(floor((Vector.z+Width)/2/Width)*Width);  
+            Zones2.y=floor(Vector.y/Height)*Height-Height;
+            Zones2.z=(floor((Vector.z+Width)/2/Width)*Width);  
         }
   
         if (coordY2<0)
@@ -127,14 +126,14 @@ surface Scales(vector Vector=0,
             
                 if (coordY2<(F2*Height/pow(Width,F1))*pow(coordZ2,F1))
                 {
-                coordZ2=coordZ;
+                coordZ2=abs(coordZ);
                 coordY2=-1*coordY;
-                Zones2.g=floor(Vector.y/Height)*Height-Height;                
+                Zones2.y=floor(Vector.y/Height)*Height-Height;                
                   if (zonesZ<0)
                     {
                         if (coordZ>0)
                         {
-                        Zones2.b=(floor((Vector.z-Width)/2/Width)*Width); 
+                        Zones2.z=(floor((Vector.z-Width)/2/Width)*Width); 
                         }
                     Zones=0.25;
                     }
@@ -142,7 +141,7 @@ surface Scales(vector Vector=0,
                     {
                         if (coordZ>0)
                         {
-                        Zones2.b=(floor((Vector.z-Width)/2/Width)*Width); 
+                        Zones2.z=(floor((Vector.z-Width)/2/Width)*Width); 
                         }                    
                     Zones=0.5;
                     }
